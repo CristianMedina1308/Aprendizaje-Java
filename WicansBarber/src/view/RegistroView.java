@@ -1,5 +1,7 @@
 package view;
 
+import db.connection;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,30 +14,87 @@ public class RegistroView extends JFrame {
 
     public RegistroView() {
         setTitle("Registro");
-        setSize(300, 300);
+        setSize(350, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLayout(new GridLayout(4, 2));
+        setLayout(new BorderLayout());
+        getContentPane().setBackground(new Color(245, 245, 245)); // Fondo gris claro
 
-        add(new JLabel("Nombre:"));
+        Font font = new Font("SansSerif", Font.PLAIN, 14);
+
+        // Panel superior con título estilizado
+        JPanel headerPanel = new JPanel();
+        headerPanel.setBackground(new Color(52, 152, 219));
+        JLabel headerLabel = new JLabel("Registro de Usuario");
+        headerLabel.setForeground(Color.WHITE);
+        headerLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
+        headerPanel.add(headerLabel);
+        add(headerPanel, BorderLayout.NORTH);
+
+        // Panel central con campos de entrada
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new GridLayout(5, 1, 10, 10));
+        contentPanel.setBackground(new Color(245, 245, 245));
+
+        // Campo de nombre
+        JPanel nombrePanel = new JPanel();
+        nombrePanel.setBackground(new Color(245, 245, 245));
+        nombrePanel.setLayout(new BorderLayout());
+        JLabel nombreLabel = new JLabel("Nombre:");
+        nombreLabel.setFont(font);
+        nombrePanel.add(nombreLabel, BorderLayout.WEST);
         nombreField = new JTextField();
-        add(nombreField);
+        nombreField.setFont(font);
+        nombrePanel.add(nombreField, BorderLayout.CENTER);
+        contentPanel.add(nombrePanel);
 
-        add(new JLabel("Teléfono:"));
+        // Campo de teléfono
+        JPanel telefonoPanel = new JPanel();
+        telefonoPanel.setBackground(new Color(245, 245, 245));
+        telefonoPanel.setLayout(new BorderLayout());
+        JLabel telefonoLabel = new JLabel("Teléfono:");
+        telefonoLabel.setFont(font);
+        telefonoPanel.add(telefonoLabel, BorderLayout.WEST);
         telefonoField = new JTextField();
-        add(telefonoField);
+        telefonoField.setFont(font);
+        telefonoPanel.add(telefonoField, BorderLayout.CENTER);
+        contentPanel.add(telefonoPanel);
 
-        add(new JLabel("Contraseña:"));
+        // Campo de contraseña
+        JPanel passwordPanel = new JPanel();
+        passwordPanel.setBackground(new Color(245, 245, 245));
+        passwordPanel.setLayout(new BorderLayout());
+        JLabel passwordLabel = new JLabel("Contraseña:");
+        passwordLabel.setFont(font);
+        passwordPanel.add(passwordLabel, BorderLayout.WEST);
         passwordField = new JPasswordField();
-        add(passwordField);
+        passwordField.setFont(font);
+        passwordPanel.add(passwordField, BorderLayout.CENTER);
+        contentPanel.add(passwordPanel);
+
+        add(contentPanel, BorderLayout.CENTER);
+
+        // Panel inferior con botón de registro
+        JPanel footerPanel = new JPanel();
+        footerPanel.setBackground(new Color(245, 245, 245));
+        footerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
         JButton registrarButton = new JButton("Registrarse");
+        registrarButton.setFont(font);
+        registrarButton.setBackground(new Color(43, 110, 192));
+        registrarButton.setForeground(Color.WHITE);
+        registrarButton.setPreferredSize(new Dimension(120, 40));
         registrarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 registrarUsuario();
             }
         });
-        add(registrarButton);
+
+        footerPanel.add(registrarButton);
+        add(footerPanel, BorderLayout.SOUTH);
+
+        setLocationRelativeTo(null);  // Centrar la ventana en la pantalla
+
     }
 
     private void registrarUsuario() {
@@ -43,13 +102,35 @@ public class RegistroView extends JFrame {
         String telefono = telefonoField.getText();
         String password = new String(passwordField.getPassword());
 
-        JOptionPane.showMessageDialog(this, "Registro exitoso!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-        abrirInicioView();
+        // Validación simple
+        if (nombre.isEmpty() || telefono.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        boolean respuesta = connection.registrarUsuario(nombre,password);
+
+        if (respuesta){
+            JOptionPane.showMessageDialog(this, "Registro exitoso!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            abrirInicioView();
+        }else{
+            JOptionPane.showMessageDialog(this, "Ha ocurrido un error, intentalo de nuevo por favor.!", "Error", JOptionPane.INFORMATION_MESSAGE);
+            abrirInicioView();
+        }
+
     }
 
     private void abrirInicioView() {
         InicioView inicioView = new InicioView();
         inicioView.setVisible(true);
         dispose();
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new RegistroView().setVisible(true);
+            }
+        });
     }
 }

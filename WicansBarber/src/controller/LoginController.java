@@ -1,5 +1,6 @@
 package controller;
 
+import db.connection;
 import view.BarberosView;
 import view.LoginView;
 
@@ -11,10 +12,19 @@ public class LoginController {
     private LoginView vista;
     private BarberosView barberosView;
 
+    public LoginController(){
+
+    }
     public LoginController(LoginView vista, BarberosView barberosView) {
         this.vista = vista;
         this.barberosView = barberosView;
         this.vista.addLoginListener(new LoginButtonListener());
+    }
+
+    public boolean validarCredenciales(String email, String password) {
+
+        return connection.validateUser(email, password);
+//            return email.equals("test@barberia.com") && password.equals("1234");
     }
 
     public class LoginButtonListener implements ActionListener {
@@ -34,8 +44,6 @@ public class LoginController {
             }
         }
 
-        private boolean validarCredenciales(String email, String password) {
-            return email.equals("test@barberia.com") && password.equals("1234");
-        }
+
     }
 }

@@ -10,11 +10,11 @@ public class BarberosView extends JFrame {
 
     public BarberosView() {
         setTitle("Nuestros Barberos");
-        setSize(400, 300);
+        setSize(400, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // Área de texto para mostrar la información de los barberos
+        // Configuración del área de texto para mostrar la información de los barberos
         barberosArea = new JTextArea();
         barberosArea.setEditable(false);
         barberosArea.setLineWrap(true);
@@ -36,16 +36,38 @@ public class BarberosView extends JFrame {
                 "Especialidades: Tijera\n" +
                 "Experiencia: 1 año\n");
 
+        // Configuración del área de texto para que sea más agradable visualmente
+        barberosArea.setFont(new Font("Arial", Font.PLAIN, 14));
+        barberosArea.setBackground(new Color(245, 245, 245));
+        barberosArea.setForeground(new Color(33, 33, 33));
 
         JScrollPane scrollPane = new JScrollPane(barberosArea);
         add(scrollPane, BorderLayout.CENTER);
 
+        // Panel inferior para los botones
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(new Color(245, 245, 245));
+
         // Botón para reservar cita
         reservarButton = new JButton("Reservar Cita");
-        add(reservarButton, BorderLayout.SOUTH);
+        configurarBoton(reservarButton, new Color(52, 152, 219), Color.WHITE);
+        buttonPanel.add(reservarButton);
+
+        add(buttonPanel, BorderLayout.SOUTH);
+
+        setLocationRelativeTo(null); // Centra la ventana
+        setVisible(true);
     }
 
     public void addReservarListener(ActionListener listener) {
         reservarButton.addActionListener(listener);
+    }
+
+    private void configurarBoton(JButton button, Color bgColor, Color fgColor) {
+        button.setFont(new Font("Arial", Font.BOLD, 14));
+        button.setBackground(bgColor);
+        button.setForeground(fgColor);
+        button.setPreferredSize(new Dimension(150, 40));
+        button.setFocusPainted(false);
     }
 }
