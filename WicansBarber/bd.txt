@@ -1,0 +1,44 @@
+-- Crear la base de datos Barberias
+CREATE DATABASE IF NOT EXISTS Barberias;
+
+-- Usar la base de datos Barberias
+USE Barberias;
+
+-- Crear la tabla usuarios
+CREATE TABLE IF NOT EXISTS usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100),
+    contraseña VARCHAR(100)
+);
+
+-- Crear un usuario inicial
+INSERT INTO usuarios (nombre, contraseña) VALUES ('Juan', 'miContraseña123');
+
+-- Crear la tabla citas
+CREATE TABLE IF NOT EXISTS citas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100),
+    telefono VARCHAR(15),
+    fecha VARCHAR(255),
+    barbero VARCHAR(100),
+    corte VARCHAR(100)
+);
+
+
+CREATE TABLE  barberos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100),
+    especialidad VARCHAR(100)
+);
+
+CREATE TABLE clientes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100),
+    email VARCHAR(100)
+);
+
+CREATE TABLE  servicios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100),
+    precio DECIMAL(10, 2)
+);
